@@ -2,7 +2,7 @@
 set -e
 
 # Configurar variáveis
-export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+export JAVA_HOME="/opt/homebrew/opt/openjdk@17"
 export ANDROID_HOME=~/Library/Android/sdk
 export PATH=/usr/local/bin:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools:$JAVA_HOME/bin:$PATH
 

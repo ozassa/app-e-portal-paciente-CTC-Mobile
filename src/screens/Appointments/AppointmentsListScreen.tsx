@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Screen } from '@/components/layout/Screen';
@@ -112,6 +113,7 @@ const AppointmentCard = ({ item }: { item: AppointmentType }) => {
 };
 
 export const AppointmentsListScreen = () => {
+  const navigation = useNavigation();
   const { data: appointments, isLoading } = useAppointments();
 
   // Group appointments by date
@@ -163,7 +165,10 @@ export const AppointmentsListScreen = () => {
             <Text style={styles.emptyDescription}>
               Você não possui consultas ou exames agendados no momento
             </Text>
-            <TouchableOpacity style={styles.scheduleButton}>
+            <TouchableOpacity
+              style={styles.scheduleButton}
+              onPress={() => navigation.navigate('ScheduleAppointment' as never)}
+            >
               <LinearGradient
                 colors={['#3B82F6', '#2563EB']}
                 style={styles.scheduleGradient}
