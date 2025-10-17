@@ -1,14 +1,25 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Alert } from 'react-native';
-import { TextInput, Button, Text, HelperText } from 'react-native-paper';
+import {
+  View,
+  StyleSheet,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  TouchableOpacity,
+  Linking,
+  Image,
+} from 'react-native';
+import { TextInput, Button, Text, HelperText, useTheme } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
-import { Screen } from '@/components/layout/Screen';
+import LinearGradient from 'react-native-linear-gradient';
 import { useAuth } from '@/hooks/useAuth';
 import { formatCPF, validateCPF, cleanCPF } from '@/utils/cpfValidator';
 
 export const LoginScreen = () => {
   const navigation = useNavigation<any>();
   const { login } = useAuth();
+  const theme = useTheme();
 
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
@@ -49,93 +60,240 @@ export const LoginScreen = () => {
     }
   };
 
+  const openPrivacyPolicy = () => {
+    Linking.openURL('https://ctctech.com.br/politica-de-privacidade/');
+  };
+
   return (
-    <Screen scroll padding>
-      <View style={styles.container}>
-        <Text variant="displayMedium" style={styles.title}>
-          Portal CTC
-        </Text>
-        <Text variant="bodyLarge" style={styles.subtitle}>
-          Bem-vindo! Faça login para continuar
-        </Text>
+    <LinearGradient
+      colors={['#3B82F6', '#2563EB', '#1E40AF']}
+      style={styles.gradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 0, y: 1 }}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContent}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Logo Section */}
+          <View style={styles.logoSection}>
+            <View style={styles.logoContainer}>
+              <Text style={styles.logoText}>CTC</Text>
+            </View>
+          </View>
 
-        <View style={styles.form}>
-          <TextInput
-            label="CPF"
-            value={cpf}
-            onChangeText={handleCPFChange}
-            keyboardType="numeric"
-            maxLength={14}
-            error={!!cpfError}
-            disabled={loading}
-            mode="outlined"
-            style={styles.input}
-          />
-          <HelperText type="error" visible={!!cpfError}>
-            {cpfError}
-          </HelperText>
+          {/* Welcome Card */}
+          <View style={styles.card}>
+            <View style={styles.cardContent}>
+              <Text style={styles.welcomeTitle}>Bem-vindo!</Text>
+              <Text style={styles.welcomeSubtitle}>
+                Digite os dados para acessar o aplicativo
+              </Text>
 
-          <TextInput
-            label="Senha"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-            disabled={loading}
-            mode="outlined"
-            right={
-              <TextInput.Icon
-                icon={showPassword ? 'eye-off' : 'eye'}
-                onPress={() => setShowPassword(!showPassword)}
-              />
-            }
-            style={styles.input}
-          />
+              <View style={styles.form}>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>CPF</Text>
+                  <TextInput
+                    value={cpf}
+                    onChangeText={handleCPFChange}
+                    placeholder="000.000.000-00"
+                    keyboardType="numeric"
+                    maxLength={14}
+                    error={!!cpfError}
+                    disabled={loading}
+                    mode="outlined"
+                    style={styles.input}
+                    outlineColor="#E5E7EB"
+                    activeOutlineColor={theme.colors.primary}
+                    outlineStyle={styles.inputOutline}
+                  />
+                  <HelperText type="error" visible={!!cpfError}>
+                    {cpfError}
+                  </HelperText>
+                </View>
 
-          <Button
-            mode="contained"
-            onPress={handleLogin}
-            loading={loading}
-            disabled={loading}
-            style={styles.button}
-          >
-            Entrar
-          </Button>
+                <View style={styles.inputContainer}>
+                  <Text style={styles.label}>Senha</Text>
+                  <TextInput
+                    value={password}
+                    onChangeText={setPassword}
+                    placeholder="000000"
+                    secureTextEntry={!showPassword}
+                    disabled={loading}
+                    mode="outlined"
+                    style={styles.input}
+                    outlineColor="#E5E7EB"
+                    activeOutlineColor={theme.colors.primary}
+                    outlineStyle={styles.inputOutline}
+                    right={
+                      <TextInput.Icon
+                        icon={showPassword ? 'eye-off' : 'eye'}
+                        onPress={() => setShowPassword(!showPassword)}
+                      />
+                    }
+                  />
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate('ForgotPassword')}
+                    disabled={loading}
+                    style={styles.forgotButton}
+                  >
+                    <Text style={styles.forgotText}>Esqueci minha senha</Text>
+                  </TouchableOpacity>
+                </View>
 
-          <Button
-            mode="text"
-            onPress={() => navigation.navigate('ForgotPassword')}
-            disabled={loading}
-          >
-            Esqueci minha senha
-          </Button>
-        </View>
-      </View>
-    </Screen>
+                <Button
+                  mode="contained"
+                  onPress={handleLogin}
+                  loading={loading}
+                  disabled={loading}
+                  style={styles.loginButton}
+                  contentStyle={styles.loginButtonContent}
+                  labelStyle={styles.loginButtonLabel}
+                >
+                  {loading ? 'Entrando...' : 'Entrar'}
+                </Button>
+
+                <View style={styles.footer}>
+                  <Text style={styles.footerText}>
+                    Não consegue acessar o aplicativo?
+                  </Text>
+                  <Text style={styles.footerText}>
+                    Dirija-se a unidade CTCtech mais próxima
+                  </Text>
+
+                  <TouchableOpacity onPress={openPrivacyPolicy} style={styles.privacyLink}>
+                    <Text style={styles.privacyText}>Política de Privacidade</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradient: {
+    flex: 1,
+  },
   container: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
     justifyContent: 'center',
+    padding: 24,
   },
-  title: {
-    textAlign: 'center',
-    marginBottom: 8,
+  logoSection: {
+    alignItems: 'center',
+    marginBottom: 48,
   },
-  subtitle: {
+  logoContainer: {
+    width: 80,
+    height: 80,
+    borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  logoText: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#FFFFFF',
+    letterSpacing: 2,
+  },
+  card: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 16,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 8,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 16,
+    elevation: 8,
+  },
+  cardContent: {
+    padding: 32,
+  },
+  welcomeTitle: {
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: '#1F2937',
     textAlign: 'center',
-    opacity: 0.7,
+    marginBottom: 12,
+  },
+  welcomeSubtitle: {
+    fontSize: 16,
+    color: '#6B7280',
+    textAlign: 'center',
     marginBottom: 40,
   },
   form: {
     gap: 8,
   },
-  input: {
+  inputContainer: {
     marginBottom: 8,
   },
-  button: {
-    marginTop: 16,
+  label: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#1F2937',
     marginBottom: 8,
+  },
+  input: {
+    backgroundColor: '#FFFFFF',
+    fontSize: 16,
+  },
+  inputOutline: {
+    borderRadius: 12,
+    borderWidth: 1.5,
+  },
+  forgotButton: {
+    alignSelf: 'center',
+    marginTop: 8,
+  },
+  forgotText: {
+    fontSize: 14,
+    color: '#3B82F6',
+    textDecorationLine: 'underline',
+  },
+  loginButton: {
+    marginTop: 40,
+    borderRadius: 12,
+  },
+  loginButtonContent: {
+    height: 56,
+  },
+  loginButtonLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  footer: {
+    marginTop: 32,
+    alignItems: 'center',
+    gap: 8,
+  },
+  footerText: {
+    fontSize: 13,
+    color: '#6B7280',
+    textAlign: 'center',
+  },
+  privacyLink: {
+    marginTop: 8,
+  },
+  privacyText: {
+    fontSize: 13,
+    color: '#3B82F6',
+    textDecorationLine: 'underline',
   },
 });

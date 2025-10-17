@@ -58,3 +58,4 @@ ios/Pods/
 *~
 .tmp/
 .temp/
+.npm-cache/
