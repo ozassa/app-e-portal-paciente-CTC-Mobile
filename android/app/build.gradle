@@ -82,6 +82,13 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    configurations.all {
+        resolutionStrategy {
+            force 'androidx.core:core:1.13.1'
+            force 'androidx.core:core-ktx:1.13.1'
+        }
+    }
     signingConfigs {
         debug {
             storeFile file('debug.keystore')
@@ -108,14 +115,6 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:flipper-integration")
-
-    // Force compatible androidx.core versions for AGP 8.1.1
-    implementation("androidx.core:core:1.13.1") {
-        force = true
-    }
-    implementation("androidx.core:core-ktx:1.13.1") {
-        force = true
-    }
 
     if (hermesEnabled.toBoolean()) {
         implementation("com.facebook.react:hermes-android")
