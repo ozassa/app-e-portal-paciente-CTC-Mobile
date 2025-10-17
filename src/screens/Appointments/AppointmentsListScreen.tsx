@@ -2,6 +2,9 @@ import React, { useMemo } from 'react';
 import { View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Screen } from '@/components/layout/Screen';
@@ -9,6 +12,12 @@ import { Loading } from '@/components/ui/Loading';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { useAppointments } from '@/hooks/useAppointments';
 import { formatDateTime } from '@/utils/formatters';
+import type { RootStackParamList, MainTabsParamList } from '@/types/navigation';
+
+type NavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabsParamList, 'Appointments'>,
+  StackNavigationProp<RootStackParamList>
+>;
 
 type AppointmentStatus = 'scheduled' | 'confirmed' | 'completed' | 'cancelled';
 
@@ -113,7 +122,7 @@ const AppointmentCard = ({ item }: { item: AppointmentType }) => {
 };
 
 export const AppointmentsListScreen = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp>();
   const { data: appointments, isLoading } = useAppointments();
 
   // Group appointments by date
@@ -167,7 +176,7 @@ export const AppointmentsListScreen = () => {
             </Text>
             <TouchableOpacity
               style={styles.scheduleButton}
-              onPress={() => navigation.navigate('ScheduleAppointment' as never)}
+              onPress={() => navigation.navigate('ScheduleAppointment')}
             >
               <LinearGradient
                 colors={['#3B82F6', '#2563EB']}

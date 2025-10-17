@@ -11,3 +11,9 @@ export type MainTabsParamList = {
   Units: undefined;
   Profile: undefined;
 };
+
+export type RootStackParamList = {
+  MainTabs: undefined;
+  ScheduleAppointment: undefined;
+  ExamResults: undefined;
+};

@@ -2,16 +2,25 @@ import React, { useEffect, useRef } from 'react';
 import { View, StyleSheet, Animated, Easing, TouchableOpacity, Dimensions } from 'react-native';
 import { Text, Card } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
+import type { StackNavigationProp } from '@react-navigation/stack';
+import type { CompositeNavigationProp } from '@react-navigation/native';
+import type { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Screen } from '@/components/layout/Screen';
 import { useAuth } from '@/hooks/useAuth';
+import type { RootStackParamList, MainTabsParamList } from '@/types/navigation';
+
+type NavigationProp = CompositeNavigationProp<
+  BottomTabNavigationProp<MainTabsParamList, 'Home'>,
+  StackNavigationProp<RootStackParamList>
+>;
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 60) / 2;
 
 export const HomeScreen = () => {
-  const navigation = useNavigation<any>();
+  const navigation = useNavigation<NavigationProp>();
   const { user } = useAuth();
 
   // Animações
@@ -180,7 +189,7 @@ export const HomeScreen = () => {
               </View>
               <TouchableOpacity
                 style={styles.actionCardButton}
-                onPress={() => navigation.navigate('ScheduleAppointment' as never)}
+                onPress={() => navigation.navigate('ScheduleAppointment')}
               >
                 <Icon name="arrow-right" size={20} color="#0284C7" />
               </TouchableOpacity>
@@ -210,7 +219,7 @@ export const HomeScreen = () => {
               </View>
               <TouchableOpacity
                 style={[styles.actionCardButton, { backgroundColor: '#FFFFFF' }]}
-                onPress={() => navigation.navigate('ExamResults' as never)}
+                onPress={() => navigation.navigate('ExamResults')}
               >
                 <Icon name="arrow-right" size={20} color="#059669" />
               </TouchableOpacity>

@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthStack } from './AuthStack';
-import { MainTabs } from './MainTabs';
+import { RootStack } from './RootStack';
 import { Loading } from '@/components/ui/Loading';
 
 export const AppNavigator = () => {
@@ -14,7 +14,7 @@ export const AppNavigator = () => {
 
   return (
     <NavigationContainer>
-      {isAuthenticated ? <MainTabs /> : <AuthStack />}
+      {isAuthenticated ? <RootStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };
