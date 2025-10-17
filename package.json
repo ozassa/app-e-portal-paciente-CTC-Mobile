@@ -1,7 +1,14 @@
 {
-  "name": "ctc-mobile-app",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "ctc-mobile",
+  "version": "0.0.1",
+  "description": "Portal do Paciente CTC - Aplicativo Mobile React Native",
+  "author": "CTC Tech <suporte@ctctech.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ozassa/app-e-portal-paciente-CTC-Mobile.git"
+  },
+  "private": true,
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",

@@ -1,72 +1,41 @@
-# CTC Mobile App - React Native
+# ctc-mobile
 
-Aplicativo mobile do Portal do Paciente CTC.
+Repositório dedicado ao aplicativo React Native bare do Portal do Paciente CTC.
 
-## Tecnologias
+## Inicialização sugerida
+1. Criar o projeto bare com TypeScript:
+   ```bash
+   npx react-native init ctcMobile --template react-native-template-typescript
+   ```
+2. Mover o conteúdo gerado para este diretório, mantendo a raiz limpa para versionamento independente.
+3. Instalar dependências essenciais:
+   ```bash
+   npm install @react-navigation/native @react-navigation/stack
+   npm install @tanstack/react-query axios
+   npm install react-native-mmkv
+   npm install --save-dev typescript @types/react @types/react-native
+   ```
+4. Adicionar integrações nativas:
+   - OCR (biblioteca a definir com o time nativo)
+   - Visualizador de exames (PDF/DICOM)
+   - Fastcomm SDK (via `@ctc/core`)
 
-- React Native 0.73.2
-- TypeScript 5.0.4
-- React Navigation 6
-- React Native Paper 5
-- React Query (TanStack Query)
-- React Hook Form + Zod
-- AsyncStorage
-
-## Estrutura do Projeto
-
+## Estrutura esperada
 ```
-src/
-├── screens/         # Telas do aplicativo
-├── navigation/      # Configuração de rotas
-├── components/      # Componentes reutilizáveis
-├── services/        # Serviços de API
-├── contexts/        # Contexts do React
-├── hooks/           # Custom hooks
-├── utils/           # Funções utilitárias
-├── types/           # Tipos TypeScript
-├── config/          # Configurações
-├── theme/           # Tema e estilos
-└── assets/          # Imagens e recursos
-```
-
-## Instalação
-
-```bash
-# Instalar dependências
-npm install
-
-# iOS (requer macOS)
-cd ios && pod install && cd ..
-
-# Executar
-npm run ios     # iOS
-npm run android # Android
+ctc-mobile/
+├── android/
+├── ios/
+├── src/
+│   ├── app/
+│   ├── modules/
+│   ├── providers/
+│   └── utils/
+├── package.json
+├── metro.config.js
+└── README.md
 ```
 
-## Variáveis de Ambiente
-
-Copie `.env.example` para `.env` e configure:
-
-```
-API_URL=http://localhost:3001/api
-API_TIMEOUT=30000
-NODE_ENV=development
-```
-
-## Scripts
-
-- `npm start` - Iniciar Metro Bundler
-- `npm run ios` - Executar no iOS
-- `npm run android` - Executar no Android
-- `npm test` - Executar testes
-- `npm run lint` - Verificar código
-
-## Funcionalidades
-
-- Login com CPF e senha
-- Autenticação 2FA
-- Dashboard com informações do paciente
-- Agendamentos e consultas
-- Lista de unidades CTC
-- Perfil do usuário
-- Tema claro/escuro
+## Próximos passos
+- Consumir `@ctc/core` para autenticação, agendamentos e integrações com middleware.
+- Configurar Fastlane/EAS para builds de produção.
+- Implementar automação de testes (Detox) e política de versionamento alinhada com as lojas.
